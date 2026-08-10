@@ -1,0 +1,557 @@
+install the correct thing
+
+Because we're building an ASP.NET Core Web API with .NET 9, we need the .NET 9 SDK, not just the Runtime.
+
+The SDK includes the dotnet CLI we need to:
+
+create projects
+build
+run
+install EF tools
+create migrations
+test
+publish
+
+Microsoft's official .NET download page is here:
+
+Download .NET 9 SDK from Microsoft
+
+On that page, under SDK, choose:
+
+Windows → x64 Installer
+
+Since you're on normal 64-bit Windows, that's the one we want.
+
+Microsoft Windows [Version 10.0.19045.6466]
+(c) Microsoft Corporation. All rights reserved.
+
+C:\Users\ADMIN>dotnet --version
+9.0.316
+
+C:\Users\ADMIN>
+
+C:\Users\ADMIN>dotnet --list-sdks
+9.0.316 [C:\Program Files\dotnet\sdk]
+
+C:\Users\ADMIN>
+
+-----------------------------------------------------------------------
+
+E:\DevOps-Projects>
+
+Run:
+mkdir dotnet-user-service
+
+Then:
+cd dotnet-user-service
+
+
+Then:
+dir
+
+
+Perfect broooo 🔥 clean empty project folder. Exactly what we wanted.
+
+Current:
+E:\DevOps-Projects\dotnet-user-service
+└── empty
+
+# Now we're going to create the solution first, 
+because we're deliberately building a proper structure 
+instead of letting the Web API template decide our whole repository layout.
+
+create the solution
+Run only this:
+dotnet new sln -n DotNetUserService
+
+YESS brooo 🔥 Step 2 completed successfully.
+
+You now have:
+
+E:\DevOps-Projects\dotnet-user-service
+│
+└── DotNetUserService.sln
+
+And .NET also installed its local HTTPS development certificate. Don't worry about that yet. We can trust/configure it later if needed.
+
+Step 3 — create our src folder
+
+Run only:
+mkdir src
+
+cd src
+
+Then:
+mkdir DotNetUserService
+
+cd DotNetUserService
+
+dir
+
+
+Perfect broooo 🔥 exactly right.
+
+We now have the clean structure:
+
+E:\DevOps-Projects\dotnet-user-service
+│
+├── DotNetUserService.sln
+│
+└── src
+    └── DotNetUserService
+        └── empty
+
+Now we're ready to create the actual pure ASP.NET Core REST API.
+
+Step 4 — create the Web API project
+
+You're already inside:
+E:\DevOps-Projects\dotnet-user-service\src\DotNetUserService>
+
+Run only this:
+dotnet new webapi --framework net9.0
+
+mkdir Controllers
+
+mkdir Data
+
+mkdir Models
+
+mkdir DTOs
+
+mkdir Services
+
+
+mkdir Migrations
+
+dir
+
+mkdir Repositories
+
+------------------------------------
+
+Run only this first command:
+
+dotnet add package Microsoft.EntityFrameworkCore.Sqlite --version 9.0.11
+
+Next package — EF Core Design
+
+Run:
+dotnet add package Microsoft.EntityFrameworkCore.Design --version 9.0.11
+
+🧠 Why do we need this?
+
+We're going to use EF Core migrations:
+
+Your C# Model
+      ↓
+EF Core Migration
+      ↓
+Database schema
+      ↓
+SQLite locally
+
+For example, eventually we'll be able to do:
+
+User.cs
+   ↓
+migration
+   ↓
+Users table
+
+And later the same migrations can be applied to PostgreSQL/Supabase.
+
+That's much better for a real deployable service than your old:
+
+db.Database.EnsureCreated();
+
+because migrations let us version database schema changes.
+
+🛑 Only run this now
+dotnet add package Microsoft.EntityFrameworkCore.Design --version 9.0.11
+
+Send me the output. Then I'll give you the next package/step. 🔥
+
+Package 3 — EF Core Tools
+
+Run:
+dotnet add package Microsoft.EntityFrameworkCore.Tools --version 9.0.11
+
+Why?
+
+This supports the EF Core workflow we'll use for migrations and database management from the .NET tooling side.
+
+Our package setup will become roughly:
+
+ASP.NET Core
+      │
+      ├── OpenAPI
+      │
+      └── EF Core
+            │
+            ├── Design
+            ├── Tools
+            └── SQLite
+
+And later, when we need PostgreSQL/Supabase, we'll add the PostgreSQL provider separately rather than mixing it into the local SQLite setup prematurely.
+
+Run only:
+dotnet add package Microsoft.EntityFrameworkCore.Tools --version 9.0.11
+
+YESS brooo 🔥 Now the three EF Core packages are in place:
+Microsoft.EntityFrameworkCore.Sqlite   → SQLite provider
+Microsoft.EntityFrameworkCore.Design   → migrations/design-time
+Microsoft.EntityFrameworkCore.Tools    → EF tooling
+
+We do not need PostgreSQL yet. We'll add the Npgsql provider later when we prepare the production/Supabase environment.
+
+Next: create our first real C# file — User.cs
+
+This is important because the database starts from our domain/entity model.
+
+We're going to create:
+src/DotNetUserService/
+└── Models/
+    └── User.cs
+
+Why User.cs?
+
+It represents a user record in our system:
+User
+├── Id
+├── Username
+└── Email
+
+EF Core will later use this class to understand the database table:
+C# User class
+      ↓
+EF Core
+      ↓
+SQLite Users table
+
+Create the file
+
+In VS Code:
+
+
+
+
+🧠 Notice something
+
+We're not putting database code inside User.cs.
+
+No:
+
+DbContext
+SQL
+SaveChanges
+
+Just the model.
+
+That separation is the beginning of the microservice architecture we're building.
+
+🛑 After creating User.cs
+
+Don't create DbContext yet.
+
+Just save the file and tell me User.cs done.
+
+Then we'll create:
+Data/
+└── AppDbContext.cs
+
+
+-------------------------------------
+
+Step — create the first migration
+
+You're inside:
+
+E:\DevOps-Projects\dotnet-user-service\src\DotNetUserService
+
+Run:
+dotnet ef migrations add InitialCreate
+
+Next — install dotnet-ef
+
+Run this:
+dotnet tool install --global dotnet-ef --version 9.0.11
+
+After it finishes, verify:
+dotnet ef --version
+
+---------------
+
+***** here working 
+Step 1 — create migration
+
+Run:
+dotnet ef migrations add InitialCreate
+
+What InitialCreate actually did
+
+You had these two C# pieces:
+Models/User.cs
+        +
+Data/AppDbContext.cs
+        ↓
+   EF Core reads model
+        ↓
+dotnet ef migrations add InitialCreate
+        ↓
+Migrations/ files created
+
+EF Core looked at your User model:
+User
+├── Id
+├── Username
+└── Email
+
+and created a migration describing how a database should be built for that model.
+
+So your project should now have something like:
+DotNetUserService/
+│
+├── Controllers/
+├── Data/
+│   └── AppDbContext.cs
+├── DTOs/
+├── Migrations/                    ← NEW REAL CONTENT
+│   ├── xxxxxxxx_InitialCreate.cs
+│   ├── xxxxxxxx_InitialCreate.Designer.cs
+│   └── AppDbContextModelSnapshot.cs
+├── Models/
+│   └── User.cs
+├── Repositories/
+├── Services/
+│
+├── Program.cs
+├── appsettings.json
+└── appsettings.Development.json
+
+But here's the important distinction 👇
+
+Migration ≠ database.
+
+Right now we have:
+C# Model
+   ↓
+Migration ✅
+   ↓
+Database ❌ not applied yet
+The migration is basically a version-controlled database change.
+
+Yep brooo 😂🔥 next step is applying the migration.
+
+You're still in:
+E:\DevOps-Projects\dotnet-user-service\src\DotNetUserService>
+
+
+***** here working
+Run:
+dotnet ef database update
+
+BROOOOOOOO 🔥🔥🔥 THIS PART IS 100% SUCCESSFUL.
+
+You now have a real EF Core-managed SQLite database.
+
+YESSS brooo 😂🔥 database AND table are already created.
+
+-----------------
+
+So the complete microservice is now:
+
+Angular
+   ↓
+HTTP REST API
+   ↓
+UsersController
+   ↓
+IUserService
+   ↓
+UserService
+   ↓
+IUserRepository
+   ↓
+UserRepository
+   ↓
+AppDbContext
+   ↓
+EF Core
+   ↓
+SQLite
+
+⚠️ One thing before we build
+
+Make sure these files actually exist:
+
+Repositories\
+├── IUserRepository.cs
+└── UserRepository.cs
+
+Services\
+├── IUserService.cs
+└── UserService.cs
+
+Then run:
+dotnet build
+
+If it says Build succeeded, we're ready for the next step: start the microservice locally and test the real /api/users endpoints from VS Code. 🚀
+
+
+PS E:\DevOps-Projects\dotnet-user-service\src\DotNetUserService> dotnet build
+Restore complete (0.5s)
+  DotNetUserService succeeded (1.0s) → bin\Debug\net9.0\DotNetUserService.dll
+
+Build succeeded in 2.3s
+PS E:\DevOps-Projects\dotnet-user-service\src\DotNetUserService> 
+
+🚀 Next step: actually start the microservice
+
+You're already in the correct folder, so run:
+dotnet run
+
+http://localhost:5228/api/users
+[]
+
+🧠 Why []?
+
+[] means:
+
+The API works, the database works, but there are currently zero users.
+
+That's actually a GOOD sign. 😂
+
+Your request travelled through the whole architecture:
+Browser / Angular
+       ↓
+GET /api/users
+       ↓
+UsersController
+       ↓
+UserService
+       ↓
+UserRepository
+       ↓
+AppDbContext
+       ↓
+EF Core
+       ↓
+SQLite
+       ↓
+Users table
+       ↓
+[]
+
+🔥 The entire GET pipeline is working.
+
+================================================
+
+CRUD ***** here working
+
+YES broooo 😎🔥 Let's make it super clear. We will test one complete CRUD lifecycle, in order, using two PowerShell terminals.
+
+1️⃣ First: what we're testing
+
+1. CREATE       → POST /api/users
+2. READ ALL     → GET /api/users
+3. READ SINGLE  → GET /api/users/1
+4. UPDATE       → PUT /api/users/1
+5. READ SINGLE  → verify update
+6. DELETE       → DELETE /api/users/1
+7. READ ALL     → verify deletion
+
+New Powershell;-
+PowerShell command:
+# CREATE a new user
+# This sends JSON data to the User API
+Invoke-RestMethod `
+  -Uri "http://localhost:5228/api/users" `
+  -Method POST `
+  -ContentType "application/json" `
+  -Body '{"username":"bro-user","email":"bro@example.com"}'
+
+# READ ALL users
+# This retrieves every record from the Users table
+Invoke-RestMethod `
+  -Uri "http://localhost:5228/api/users" `
+  -Method GET
+
+# READ ONE user
+# This retrieves only the user whose ID is 1
+Invoke-RestMethod `
+  -Uri "http://localhost:5228/api/users/1" `
+  -Method GET
+
+# UPDATE user ID 1
+# Replace the existing username and email
+Invoke-RestMethod `
+  -Uri "http://localhost:5228/api/users/1" `
+  -Method PUT `
+  -ContentType "application/json" `
+  -Body '{"username":"bro-updated","email":"updated@example.com"}'
+
+# READ user ID 1 again
+# This verifies that the UPDATE was persisted in the database
+Invoke-RestMethod `
+  -Uri "http://localhost:5228/api/users/1" `
+  -Method GET
+
+# DELETE user ID 1
+# This removes the user from the Users table
+Invoke-RestMethod `
+  -Uri "http://localhost:5228/api/users/1" `
+  -Method DELETE
+
+# READ ALL users one final time
+# The deleted user should no longer exist
+Invoke-RestMethod `
+  -Uri "http://localhost:5228/api/users" `
+  -Method GET
+
+🏆 Complete CRUD test
+
+CELL 1
+POST /api/users
+CREATE
+   ↓
+CELL 2
+GET /api/users
+READ ALL
+   ↓
+CELL 3
+GET /api/users/1
+READ SINGLE
+   ↓
+CELL 4
+PUT /api/users/1
+UPDATE
+   ↓
+CELL 5
+GET /api/users/1
+VERIFY UPDATE
+   ↓
+CELL 6
+DELETE /api/users/1
+DELETE
+   ↓
+CELL 7
+GET /api/users
+VERIFY DELETE
+   ↓
+[]
+
+So brooo, run Cell 1 first. Don't jump ahead. If Cell 1 returns the created user, we know the POST → Controller → Service → Repository → EF Core → SQLite path is working. 🔥
+
+
+
+
+
+
+
+
+
+
+
+
+

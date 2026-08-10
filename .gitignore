@@ -1,0 +1,191 @@
+# ==========================================
+
+# .NET / Visual Studio
+
+# ==========================================
+
+## Build output
+
+bin/
+obj/
+
+## Visual Studio
+
+.vs/
+.vscode/
+
+## User-specific files
+
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+## Visual Studio Code
+
+.history/
+
+# ==========================================
+
+# .NET Generated Files
+
+# ==========================================
+
+*.dll
+*.exe
+*.pdb
+*.cache
+
+# ==========================================
+
+# NuGet
+
+# ==========================================
+
+*.nupkg
+*.snupkg
+packages/
+.nuget/
+
+# ==========================================
+
+# Test Results
+
+# ==========================================
+
+TestResults/
+*.trx
+
+# ==========================================
+
+# Logs
+
+# ==========================================
+
+logs/
+*.log
+
+# ==========================================
+
+# SQLite
+
+# ==========================================
+
+## Local development database
+
+*.db
+*.db-shm
+*.db-wal
+*.sqlite
+*.sqlite3
+
+# ==========================================
+
+# ASP.NET Development
+
+# ==========================================
+
+## Local HTTPS certificates
+
+*.pfx
+
+## Local secrets
+
+secrets.json
+
+# ==========================================
+
+# Environment / Configuration Secrets
+
+# ==========================================
+
+.env
+.env.*
+!.env.example
+
+# Keep normal application configuration files
+
+# appsettings.json
+
+# appsettings.Development.json
+
+# Ignore production/local secret configuration
+
+appsettings.Local.json
+appsettings.Production.json
+
+# ==========================================
+
+# OS Files
+
+# ==========================================
+
+# Windows
+
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+# macOS
+
+.DS_Store
+
+# Linux
+
+*~
+
+# ==========================================
+
+# Coverage
+
+# ==========================================
+
+coverage/
+.coverage
+*.coverage
+*.coveragexml
+
+# ==========================================
+
+# Temporary Files
+
+# ==========================================
+
+*.tmp
+*.temp
+*.bak
+
+# ==========================================
+
+# Rider / JetBrains
+
+# ==========================================
+
+.idea/
+*.sln.iml
+
+# ==========================================
+
+# Publish Output
+
+# ==========================================
+
+publish/
+artifacts/
+**/publish/
+
+# ==========================================
+
+# Keep EF Core Migrations
+
+# ==========================================
+
+# IMPORTANT:
+
+# Do NOT ignore the Migrations/ directory.
+
+# EF Core migration files should be committed
+
+# to Git so the database schema can be recreated
+
+# during deployment.
