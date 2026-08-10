@@ -1,0 +1,1 @@
+git diff -- .github/workflows/ci-render.yml .github/workflows/cd-render.yml
