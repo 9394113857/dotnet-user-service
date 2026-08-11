@@ -151,3 +151,4 @@ E:\DevOps-Projects\dotnet-user-service\src\DotNetUserService\obj\Debug\net9.0\re
 E:\DevOps-Projects\dotnet-user-service\src\DotNetUserService\obj\Debug\net9.0\DotNetUserService.pdb
 E:\DevOps-Projects\dotnet-user-service\src\DotNetUserService\obj\Debug\net9.0\DotNetUserService.genruntimeconfig.cache
 E:\DevOps-Projects\dotnet-user-service\src\DotNetUserService\obj\Debug\net9.0\ref\DotNetUserService.dll
+E:\DevOps-Projects\dotnet-user-service\src\DotNetUserService\obj\Debug\net9.0\DotNetUserService.sourcelink.json
