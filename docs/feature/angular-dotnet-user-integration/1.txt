@@ -28,3 +28,11 @@ DELETE /api/users/{id}
 # Local URL: Working ✅
 http://localhost:5228/api/users
 
+Invoke-RestMethod http://localhost:5228/api/users
+
+# Check src path firsty:-
+dotnet build
+
+# Run tyhe servce in src path:-
+dotnet run
+
