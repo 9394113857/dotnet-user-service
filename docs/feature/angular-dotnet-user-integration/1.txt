@@ -36,3 +36,4 @@ dotnet build
 # Run tyhe servce in src path:-
 dotnet run
 
+# Both ends UI crud woking now
