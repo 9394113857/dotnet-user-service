@@ -57,10 +57,12 @@ dotnet build
 =======================
 
 *****
-
+# Apply inital and apply same migrations:-
 dotnet ef migrations add InitialCreate
 dotnet ef database update
 
-
+# Also clear your local temporary credentials
+Remove-Item Env:ConnectionStrings__DefaultConnection
+Remove-Item Env:DatabaseProvider
 
 
