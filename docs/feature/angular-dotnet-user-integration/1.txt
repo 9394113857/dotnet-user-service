@@ -51,6 +51,15 @@ dotnet ef migrations list
 
 Get-ChildItem appsettings*.json
 
+dotnet restore
+dotnet build
+
+=======================
+
+*****
+
+dotnet ef migrations add InitialCreate
+dotnet ef database update
 
 
 
