@@ -37,3 +37,21 @@ dotnet build
 dotnet run
 
 # Both ends UI crud woking now
+
+# Add cooment here
+dotnet add package Npgsql.EntityFrameworkCore.PostgreSQL --version 9.0.11
+
+# Add cooment here
+dotnet add package Npgsql.EntityFrameworkCore.PostgreSQL --version 9.0.4
+
+dotnet build
+
+# Check migrations:-
+dotnet ef migrations list
+
+Get-ChildItem appsettings*.json
+
+
+
+
+
